@@ -12,13 +12,18 @@ func main() {
 		log.Fatal(err)
 	}
 	floor := 0
+	pos := 0 //reason for using pos is if there's any non () in the input
 	for _, c := range input {
 		if string(c) == "(" {
 			floor++
-		}
-		if string(c) == ")" {
+			pos++
+		} else if string(c) == ")" {
 			floor--
+			pos++
+		}
+		if floor == -1 {
+			fmt.Printf("Position for entering basement is: %d\n", pos)
+			break
 		}
 	}
-	fmt.Printf("Santa ends up on floor: %d\n", floor)
 }
