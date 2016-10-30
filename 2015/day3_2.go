@@ -34,7 +34,7 @@ func main() {
 	sn, se, rn, re := 0, 0, 0, 0
 
 	travels[calculateCoord(sn, se)] += 2
-	input, err := ioutil.ReadFile("day3.input")
+	input, err := ioutil.ReadFile("input/3")
 	if err != nil {
 		log.Fatal(err)
 	}

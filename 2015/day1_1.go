@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	input, err := ioutil.ReadFile("day1.input")
+	input, err := ioutil.ReadFile("input/1")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	input, err := os.Open("day2.input")
+	input, err := os.Open("input/2")
 	if err != nil {
 		log.Fatal(err)
 	}

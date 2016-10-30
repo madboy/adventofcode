@@ -41,7 +41,7 @@ func hasDoubleLetters(s string) bool {
 
 func main() {
 	nice := 0
-	input, err := os.Open("day5.input")
+	input, err := os.Open("input/5")
 	if err != nil {
 		log.Fatal(err)
 	}

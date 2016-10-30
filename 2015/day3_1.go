@@ -20,7 +20,7 @@ func main() {
 	n, e := 0, 0
 	currentCoord := calculateCoord(n, e)
 	travels[currentCoord]++
-	input, err := ioutil.ReadFile("day3.input")
+	input, err := ioutil.ReadFile("input/3")
 	if err != nil {
 		log.Fatal(err)
 	}
