@@ -16,17 +16,14 @@ func updateLights(action string, from []string, to []string, lights map[string]i
 	toY, _ := strconv.Atoi(to[1])
 	for x := fromX; x <= toX; x++ {
 		for y := fromY; y <= toY; y++ {
+			coord := strconv.Itoa(x) + "x" + strconv.Itoa(y)
 			switch action {
 			case "on":
-				lights[strconv.Itoa(x)+"x"+strconv.Itoa(y)] = 1
+				lights[coord] = 1
 			case "off":
-				lights[strconv.Itoa(x)+"x"+strconv.Itoa(y)] = 0
+				lights[coord] = 0
 			case "toggle":
-				if lights[strconv.Itoa(x)+"x"+strconv.Itoa(y)] == 0 {
-					lights[strconv.Itoa(x)+"x"+strconv.Itoa(y)] = 1
-				} else {
-					lights[strconv.Itoa(x)+"x"+strconv.Itoa(y)] = 0
-				}
+				lights[coord] = 1 - lights[coord]
 			}
 		}
 	}
