@@ -10,7 +10,6 @@ import (
 )
 
 func updateLights(action string, from []string, to []string, lights map[string]int) {
-	// does not support any other action than turning on lights
 	fromX, _ := strconv.Atoi(from[0])
 	fromY, _ := strconv.Atoi(from[1])
 	toX, _ := strconv.Atoi(to[0])
@@ -46,12 +45,11 @@ func main() {
 	scanner := bufio.NewScanner(input)
 	for scanner.Scan() {
 		line := scanner.Text()
-		// line := "toggle 499,499 through 500,500"
 		words := strings.Split(line, " ")
 		// we have two cases
 		// toggle, and
 		// turn on or off
-		// after we have which lights are affected by the action
+		// when we know case we extract coords
 		if words[0] == "toggle" {
 			from := strings.Split(words[1], ",")
 			to := strings.Split(words[3], ",")
