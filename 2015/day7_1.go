@@ -41,9 +41,20 @@ func applyGate(receiver string, parts []string) {
 	}
 }
 
+func getInstruction(line string) (string, []string) {
+	instruction := strings.Split(line, "->")
+	signal := strings.Trim(instruction[0], " ")
+	signalParts := strings.Split(signal, " ")
+	receiver := strings.Trim(instruction[1], " ")
+	return receiver, signalParts
+}
+
 func main() {
 	wires = make(map[string]int)
 	// eh, we should do this in another way
+	// have a queue for gates that are not complete yet?
+	// and pop as we start getting values
+	// but only stop when the queue is empty?
 	for i := 0; i < 150; i++ {
 		input, err := os.Open("input/7")
 		if err != nil {
@@ -54,24 +65,19 @@ func main() {
 		scanner := bufio.NewScanner(input)
 		for scanner.Scan() {
 			line := scanner.Text()
-			instruction := strings.Split(line, "->")
-			signal := strings.Trim(instruction[0], " ")
-			signalParts := strings.Split(signal, " ")
-			receiver := strings.Trim(instruction[1], " ")
+			receiver, signalParts := getInstruction(line)
 			// Determine which type of signal we have based on instruction length
 			switch sl := len(signalParts); sl {
-			case 1:
+			case 1: //Pure value feed
 				value, err := getValue(signalParts[0])
 				if err == nil {
-					// fmt.Printf("We are getting past %s\n", line)
 					wires[receiver] = value
 				}
-			case 2:
+			case 2: // NOT
 				if val, err := getValue(signalParts[1]); err == nil {
-					// fmt.Printf("We are getting past %s\n", line)
 					wires[receiver] = (65535 - val)
 				}
-			case 3:
+			case 3: // Two value gates
 				applyGate(receiver, signalParts)
 			}
 		}
@@ -84,4 +90,5 @@ func main() {
 	for _, k := range keys {
 		fmt.Printf("%s: %d\n", k, wires[k])
 	}
+	fmt.Printf("And for a the signal is %d\n", wires["a"])
 }
