@@ -14,11 +14,57 @@ type point struct {
 	y int
 }
 
+var (
+	facing  point
+	coord   point
+	twice   point
+	origo   point
+	visited map[point]int
+)
+
 func abs(i int) int {
 	if i < 0 {
 		return -i
 	}
 	return i
+}
+
+// walk each block step by sneaky step
+func walk(steps, face int, start point, xwards bool) {
+	for i := 0; i < steps; i++ {
+		if xwards {
+			start.x += face * 1
+		} else {
+			start.y += face * 1
+		}
+		p := point{x: start.x, y: start.y}
+		visited[p]++
+		if visited[p] > 1 && (twice == origo) {
+			twice = p
+		}
+	}
+}
+
+// newCoord updates the current to where the instrcution tells us to go
+func newCoord(instruction string, xwards bool) {
+	steps, _ := strconv.Atoi(instruction[1:])
+	if xwards {
+		if string(instruction[0]) == "R" {
+			facing.x = facing.y
+		} else {
+			facing.x = -facing.y
+		}
+		walk(steps, facing.x, coord, xwards)
+		coord.x += facing.x * steps
+	} else {
+		if string(instruction[0]) == "R" {
+			facing.y = -facing.x
+		} else {
+			facing.y = facing.x
+		}
+		walk(steps, facing.y, coord, xwards)
+		coord.y += facing.y * steps
+	}
 }
 
 func main() {
@@ -29,11 +75,11 @@ func main() {
 	defer input.Close()
 
 	scanner := bufio.NewScanner(input)
-	facing := point{x: 0, y: 1}
-	coord := point{x: 0, y: 0}
-	twice := point{x: 0, y: 0}
-	origo := point{x: 0, y: 0}
-	var visited = make(map[point]int)
+	facing = point{x: 0, y: 1}
+	coord = point{x: 0, y: 0}
+	twice = point{x: 0, y: 0}
+	origo = point{x: 0, y: 0}
+	visited = make(map[point]int)
 	xwards := true
 
 	for scanner.Scan() {
@@ -41,40 +87,7 @@ func main() {
 		// line := "R8, R4, R4, R8"
 		instructions := strings.Split(line, ", ")
 		for _, instruction := range instructions {
-			steps, _ := strconv.Atoi(instruction[1:])
-			if xwards {
-				if string(instruction[0]) == "R" {
-					facing.x = facing.y
-				} else {
-					facing.x = -facing.y
-				}
-				startx := coord.x
-				for i := 0; i < steps; i++ {
-					startx += facing.x * 1
-					p := point{x: startx, y: coord.y}
-					visited[p]++
-					if visited[p] > 1 && (twice == origo) {
-						twice = p
-					}
-				}
-				coord.x += facing.x * steps
-			} else {
-				if string(instruction[0]) == "R" {
-					facing.y = -facing.x
-				} else {
-					facing.y = facing.x
-				}
-				starty := coord.y
-				for i := 0; i < steps; i++ {
-					starty += facing.y * 1
-					p := point{x: coord.x, y: starty}
-					visited[p]++
-					if visited[p] > 1 && (twice == origo) {
-						twice = p
-					}
-				}
-				coord.y += facing.y * steps
-			}
+			newCoord(instruction, xwards)
 			xwards = !xwards
 		}
 	}
