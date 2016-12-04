@@ -39,13 +39,13 @@ func walk(steps, face int, start point, xwards bool) {
 		}
 		p := point{x: start.x, y: start.y}
 		visited[p]++
-		if visited[p] > 1 && (twice == origo) {
+		if visited[p] > 1 && (twice == origo) { // only set twice if we haven't before
 			twice = p
 		}
 	}
 }
 
-// newCoord updates the current to where the instrcution tells us to go
+// newCoord updates the current to where the instruction tells us to go
 func newCoord(instruction string, xwards bool) {
 	steps, _ := strconv.Atoi(instruction[1:])
 	if xwards {
@@ -80,11 +80,10 @@ func main() {
 	twice = point{x: 0, y: 0}
 	origo = point{x: 0, y: 0}
 	visited = make(map[point]int)
-	xwards := true
+	xwards := true // shouldn't be needed if we use n,s,e,w for facing
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		// line := "R8, R4, R4, R8"
 		instructions := strings.Split(line, ", ")
 		for _, instruction := range instructions {
 			newCoord(instruction, xwards)
