@@ -1,0 +1,21 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
+)
+
+func main() {
+	input, err := os.Open("input/4.test")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer input.Close()
+	scanner := bufio.NewScanner(input)
+	for scanner.Scan() {
+		line := scanner.Text()
+		fmt.Println(line)
+	}
+}
