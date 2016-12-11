@@ -26,9 +26,8 @@ func (a ByCount) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
 func (a ByCount) Less(i, j int) bool {
 	if a[i].Count == a[j].Count {
 		return a[i].Char < a[j].Char
-	} else {
-		return a[i].Count > a[j].Count
 	}
+	return a[i].Count > a[j].Count
 }
 
 func updateLetters(letters *[]Letter, letter string) {
