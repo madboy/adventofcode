@@ -13,10 +13,10 @@ func main() {
 	}
 	floor := 0
 	for _, c := range input {
-		if string(c) == "(" {
+		switch char := string(c); char {
+		case "(":
 			floor++
-		}
-		if string(c) == ")" {
+		case ")":
 			floor--
 		}
 	}
