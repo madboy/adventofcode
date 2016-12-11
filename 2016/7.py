@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import sys
-from collections import defaultdict
 import re
 
 def check_abba(word):
@@ -17,6 +16,8 @@ def check_abba(word):
 
 
 def supports_ipv7(hypernets, supernets):
+    """For ipv7 there cannot be any ABBA in the hypernets,
+    but there should be one in the supernets"""
     for hyper in hypernets:
         if check_abba(hyper):
             return False
@@ -38,13 +39,14 @@ def check_aba(hyper, supernets):
     return False
 
 def supports_ssl(hypernets, supernets):
+    """For ssl we only care about aba and bab patterns"""
     for hyper in hypernets:
         if check_aba(hyper, supernets):
             return True
     return False
 
-ipv7 = 0
-ssl = 0
+IPV7 = 0
+SSL = 0
 for line in sys.stdin:
     l = line.strip()
     hypernet = re.compile("\[(\w+)\]")
@@ -54,9 +56,9 @@ for line in sys.stdin:
     for hyper in hypernets:
         line = line.replace(hyper, "")
     if supports_ipv7(hypernets, supernet.findall(line)):
-        ipv7 += 1
+        IPV7 += 1
     if supports_ssl(hypernets, supernet.findall(line)):
-        ssl += 1
+        SSL += 1
 
-print("%d addresses support ipv7" % ipv7)
-print("%d addresses support ssl" % ssl)
+print("%d addresses supports IPV7" % IPV7)
+print("%d addresses supports SSL" % SSL)
