@@ -1,77 +1,58 @@
 #!/usr/bin/env python3
 import sys
+from collections import deque
+import numpy as np
 
 COLUMNS = 50
 ROWS = 6
 
-def prepare_screen(pixels):
-    for y in range(ROWS):
-        for x in range(COLUMNS):
-            pixels[(x,y)] = "."
-
 def turn_on_pixels(columns, rows, pixels):
-    count = 0
     for y in range(rows):
         for x in range(columns):
-            pixels[(x,y)] = "#"
-            count += 1
-    return count
-
-def rotate_row(row, by, pixels):
-    changes = []
-    for x in range(COLUMNS):
-        coord = (x, row)
-        if pixels[coord] == "#":
-            pixels[coord] = "."
-            changes.append(((x+by) % COLUMNS, row))
-    for change in changes:
-        pixels[change] = "#"
+            pixels[y][x] = "#"
 
 def rotate_column(column, by, pixels):
-    changes = []
-    for y in range(ROWS):
-        coord = (column, y)
-        if pixels[coord] == "#":
-            pixels[coord] = "."
-            changes.append((column, (y+by) % ROWS))
-    for change in changes:
-        pixels[change] = "#"
+    items = deque(pixels.transpose()[column])
+    items.rotate(by)
+    pixels.transpose()[column] = items
+
+def rotate_row(row, by, pixels):
+    items = deque(pixels[row])
+    items.rotate(by)
+    pixels[row] = items
 
 def print_screen(pixels):
-    for y in range(ROWS):
-        row = ""
-        for x in range(COLUMNS):
-            row += pixels[(x,y)]
-        print(row)
+    for row in pixels:
+        leds = ""
+        for col in row:
+            leds += col
+        print(leds)
 
 def count_on_pixels(pixels):
     count = 0
-    for y in range(ROWS):
-        for x in range(COLUMNS):
-            if pixels[(x,y)] == "#":
+    for row in pixels:
+        for col in row:
+            if col == "#":
                 count += 1
     return count
 
-pixels = {}
-prepare_screen(pixels)
-scount = 0
+PIXELS = [["."]*COLUMNS for i in range(ROWS)]
+PIXELS = np.array(PIXELS)
+
 for line in sys.stdin:
-    # deal with three different actions
-    # rect (turn on all the specified pixels, starting top left 0,0)
-    # rotate row
-    # rotate column
-    parts = line.split(" ")
+    line.strip()
+    parts = line.split(" ") # rect 2x1 || rotate row y=0 by 5
     if line.startswith("rect"):
         coords = parts[1].split("x")
-        scount += turn_on_pixels(int(coords[0]), int(coords[1]), pixels)
-    elif line.startswith("rotate row"):
-        row = int(parts[2][-1])
-        rotate_by = int(parts[-1])
-        rotate_row(row, rotate_by, pixels)
-    else: # rotate column
-        column = int(parts[2][-1])
-        rotate_by = int(parts[-1])
-        rotate_column(column, rotate_by, pixels)
+        turn_on_pixels(int(coords[0]), int(coords[1]), PIXELS)
+        continue
+    # ["rotate", "row", "y=0", "by", "5"]
+    rc = int(parts[2].split("=")[1]) # y=11
+    rotate_by = int(parts[-1])
+    if line.startswith("rotate row"):
+        rotate_row(rc, rotate_by, PIXELS)
+    elif line.startswith("rotate column"): # rotate column
+        rotate_column(rc, rotate_by, PIXELS)
 
-print_screen(pixels)
-print(count_on_pixels(pixels), scount)
+print_screen(PIXELS)
+print(count_on_pixels(PIXELS))
