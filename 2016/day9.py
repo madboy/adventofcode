@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 import sys
+from enum import Enum
+
+class State(Enum):
+    normal = 1
+    marker = 2
 
 def read_marker(marker):
     parts = marker.split("x")
@@ -9,35 +14,39 @@ def read_marker(marker):
 
 def decompress(line):
     marker = ""
-    marked = False
+    state = State.normal
     nbr_of_chars = -1
     to_repeat = ""
     repetition = 0
     output = ""
-    for i,c in enumerate(line):
+    for i, c in enumerate(line):
         if nbr_of_chars == 1:
             to_repeat += c
             output += to_repeat*repetition
             marker = ""
-            marked = False
+            state = State.normal
             nbr_of_chars = -1
             to_repeat = ""
         elif nbr_of_chars > 0:
             to_repeat += c
             nbr_of_chars -= 1
-        elif marked:
+        elif state == State.marker:
             if c == ")":
-                marked = False
+                state = State.normal
                 nbr_of_chars, repetition = read_marker(marker)
             else:
                 marker += c
         elif c == "(":
-            marked = True
+            state = State.marker
         else:
             output += c
-    return output
+    return len(output)
 
-for line in sys.stdin:
-    line = line.strip()
-    dline = decompress(line)
-    print("%s... -> %s... [%d]" % (line[:12], dline[:12], len(dline)))
+def run():
+    for line in sys.stdin:
+        line = line.strip()
+        dline = decompress(line)
+        print("%s... -> %s... [%d]" % (line[:12], dline[:12], len(dline)))
+
+if __name__ == '__main__':
+    run()
