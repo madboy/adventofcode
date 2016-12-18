@@ -2,6 +2,7 @@
 import sys
 from collections import defaultdict
 
+
 class Bot(object):
     def __init__(self, name, low, high):
         self.name = name
@@ -33,6 +34,7 @@ class Bot(object):
                 bins[high_parts[1]] = self.values[1]
             else:
                 bots[high_parts[1]].add(self.values[1], bots, bins)
+
 
 def run():
     start_settings = []
