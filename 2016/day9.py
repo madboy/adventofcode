@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 import sys
-from enum import Enum
-
-class State(Enum):
-    normal = 1
-    marker = 2
 
 def read_marker(marker):
     parts = marker.split("x")
@@ -12,41 +7,36 @@ def read_marker(marker):
     repetition = int(parts[1])
     return nbr_of_chars, repetition
 
-def decompress(line):
+def _read_marker(s, l):
+    #read until we hit first )
     marker = ""
-    state = State.normal
-    nbr_of_chars = -1
-    to_repeat = ""
-    repetition = 0
-    output = ""
-    for i, c in enumerate(line):
-        if nbr_of_chars == 1:
-            to_repeat += c
-            output += to_repeat*repetition
-            marker = ""
-            state = State.normal
-            nbr_of_chars = -1
-            to_repeat = ""
-        elif nbr_of_chars > 0:
-            to_repeat += c
-            nbr_of_chars -= 1
-        elif state == State.marker:
-            if c == ")":
-                state = State.normal
-                nbr_of_chars, repetition = read_marker(marker)
-            else:
-                marker += c
-        elif c == "(":
-            state = State.marker
+    c = l[s]
+    while c != ")":
+        marker += c
+        s += 1
+        c = l[s]
+    noc, rep = read_marker(marker)
+    s += 1 # remove the )
+    return s, noc, rep
+
+def decompress(start, end, line):
+    dlen = 0
+    while start < end:
+        current = line[start]
+        if current == "(":
+            start, noc, rep = _read_marker(start+1, line)
+            dlen += rep * decompress(start, noc+start, line)
+            start = noc + start
         else:
-            output += c
-    return len(output)
+            dlen += 1
+            start += 1
+    return dlen
 
 def run():
     for line in sys.stdin:
         line = line.strip()
-        dline = decompress(line)
-        print("%s... -> %s... [%d]" % (line[:12], dline[:12], len(dline)))
+        dlen = decompress(0, len(line), line)
+        print("%s... -> ... [%d]" % (line[:12], dlen))
 
 if __name__ == '__main__':
     run()
