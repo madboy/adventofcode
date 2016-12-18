@@ -11,7 +11,8 @@ class Bot(object):
         self.values = []
 
     def __str__(self):
-        return "[name: %s, low: %s, high: %s, compares=%s]" % (self.name, self.low, self.high, self.compares)
+        return "[name: %s, low: %s, high: %s, compares=%s]" % \
+        (self.name, self.low, self.high, self.compares)
 
     def __repr__(self):
         return self.__str__()
