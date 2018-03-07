@@ -49,7 +49,6 @@ func basementPosition(input string) int {
 		}
 		if floor == -1 {
 			return pos
-			break
 		}
 	}
 	return 0
