@@ -1,11 +1,31 @@
-package main
+package days
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+)
 
 type distance struct {
 	from string
 	to   string
 	d    int
+}
+
+// Run9 will have us travelling
+func Run9(scanner *bufio.Scanner) string {
+	// Test data
+	distances := []distance{}
+
+	distances = append(distances, distance{from: "London", to: "Dublin", d: 464})
+	distances = append(distances, distance{from: "London", to: "Belfast", d: 518})
+	distances = append(distances, distance{from: "Dublin", to: "Belfast", d: 141})
+
+	locations := []string{"Belfast", "Dublin", "London"}
+
+	fmt.Println(distances)
+	fmt.Println(locations)
+	permutations([]int{1, 2, 3}, 3)
+	return "There is no answer yet!"
 }
 
 func permutations(iterable []int, r int) {
@@ -64,18 +84,4 @@ func permutations(iterable []int, r int) {
 
 	}
 
-}
-
-func main() {
-	distances := []distance{}
-
-	distances = append(distances, distance{from: "London", to: "Dublin", d: 464})
-	distances = append(distances, distance{from: "London", to: "Belfast", d: 518})
-	distances = append(distances, distance{from: "Dublin", to: "Belfast", d: 141})
-
-	locations := []string{"Belfast", "Dublin", "London"}
-
-	fmt.Println(distances)
-	fmt.Println(locations)
-	permutations([]int{1, 2, 3}, 3)
 }

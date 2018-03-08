@@ -1,20 +1,15 @@
-package main
+package days
 
 import (
 	"bufio"
 	"fmt"
 	"log"
-	"os"
 	"regexp"
 	"strings"
 )
 
-func main() {
-	input, err := os.Open("input/8")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer input.Close()
+// Run8 will have us be in character
+func Run8(scanner *bufio.Scanner) string {
 	totalStringCode := 0
 	totalStringChar := 0
 	totalNewChars := 0
@@ -24,7 +19,6 @@ func main() {
 		log.Fatal(err)
 	}
 
-	scanner := bufio.NewScanner(input)
 	for scanner.Scan() {
 		line := scanner.Text()
 		totalStringCode += len(line)
@@ -38,6 +32,7 @@ func main() {
 		line = reg.ReplaceAllString(line, "-")
 		totalStringChar += len(line)
 	}
-	fmt.Printf("%d - %d = %d\n", totalStringCode, totalStringChar, totalStringCode-totalStringChar)
-	fmt.Printf("%d - %d = %d\n", totalNewChars, totalStringCode, totalNewChars-totalStringCode)
+	return fmt.Sprintf("%d - %d = %d\n%d - %d = %d",
+		totalStringCode, totalStringChar, totalStringCode-totalStringChar,
+		totalNewChars, totalStringCode, totalNewChars-totalStringCode)
 }
