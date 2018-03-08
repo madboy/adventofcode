@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// Run5 is the naught or nice list
+// Run5 is the naughty or nice list
 func Run5(scanner *bufio.Scanner) string {
 	var lines []string
 	for scanner.Scan() {

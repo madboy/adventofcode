@@ -29,6 +29,8 @@ func main() {
 		"3": Solution{Function: days.Run3, Input: true},
 		"4": Solution{Function: days.Run4, Input: false},
 		"5": Solution{Function: days.Run5, Input: true},
+		"6": Solution{Function: days.Run6, Input: true},
+		"7": Solution{Function: days.Run7, Input: true},
 	}
 
 	flag.Parse()
