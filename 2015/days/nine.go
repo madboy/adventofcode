@@ -3,6 +3,11 @@ package days
 import (
 	"bufio"
 	"fmt"
+	"log"
+	"strconv"
+	"strings"
+
+	"github.com/madboy/adventofcode/2015/tools"
 )
 
 type distance struct {
@@ -13,75 +18,40 @@ type distance struct {
 
 // Run9 will have us travelling
 func Run9(scanner *bufio.Scanner) string {
-	// Test data
-	distances := []distance{}
-
-	distances = append(distances, distance{from: "London", to: "Dublin", d: 464})
-	distances = append(distances, distance{from: "London", to: "Belfast", d: 518})
-	distances = append(distances, distance{from: "Dublin", to: "Belfast", d: 141})
-
-	locations := []string{"Belfast", "Dublin", "London"}
-
-	fmt.Println(distances)
-	fmt.Println(locations)
-	permutations([]int{1, 2, 3}, 3)
-	return "There is no answer yet!"
-}
-
-func permutations(iterable []int, r int) {
-	pool := iterable
-	n := len(pool)
-
-	if r > n {
-		return
-	}
-
-	indices := make([]int, n)
-	for i := range indices {
-		indices[i] = i
-	}
-
-	cycles := make([]int, r)
-	for i := range cycles {
-		cycles[i] = n - i
-	}
-
-	result := make([]int, r)
-	for i, el := range indices[:r] {
-		result[i] = pool[el]
-	}
-
-	fmt.Println(result)
-
-	for n > 0 {
-		i := r - 1
-		for ; i >= 0; i-- {
-			cycles[i]--
-			if cycles[i] == 0 {
-				index := indices[i]
-				for j := i; j < n-1; j++ {
-					indices[j] = indices[j+1]
-				}
-				indices[n-1] = index
-				cycles[i] = n - i
-			} else {
-				j := cycles[i]
-				indices[i], indices[n-j] = indices[n-j], indices[i]
-
-				for k := i; k < r; k++ {
-					result[k] = pool[indices[k]]
-				}
-
-				fmt.Println(result)
-
-				break
-			}
+	distances := make(map[string]int)
+	locations := make(map[string]bool)
+	for scanner.Scan() {
+		line := scanner.Text()
+		entry := strings.Split(line, " ")
+		distance, err := strconv.Atoi(entry[4])
+		if err != nil {
+			log.Fatal(fmt.Sprintf("%s does not contain a distance\n", line))
 		}
-
-		if i < 0 {
-			return
-		}
-
+		distances[fmt.Sprintf("%s%s", entry[0], entry[2])] = distance
+		distances[fmt.Sprintf("%s%s", entry[2], entry[0])] = distance
+		locations[entry[0]] = true
+		locations[entry[2]] = true
 	}
 
+	currentMin := 10000000
+	currentMax := 0
+	var keys []string
+	for k := range locations {
+		keys = append(keys, k)
+	}
+	indices := tools.Range(len(keys))
+
+	for _, p := range tools.Permutations(indices) {
+		tdist := 0
+		for i := 0; i < len(indices)-1; i++ {
+			tdist += distances[fmt.Sprintf("%s%s", keys[p[i]], keys[p[i+1]])]
+		}
+		if tdist < currentMin {
+			currentMin = tdist
+		}
+		if tdist > currentMax {
+			currentMax = tdist
+		}
+	}
+	return fmt.Sprintf("shortest distance: %d, longest distance: %d", currentMin, currentMax)
 }
