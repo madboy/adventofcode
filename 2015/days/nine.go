@@ -19,7 +19,7 @@ type distance struct {
 // Run9 will have us travelling
 func Run9(scanner *bufio.Scanner) string {
 	distances := make(map[string]int)
-	locations := make(map[string]bool)
+	locations := tools.NewSet()
 	for scanner.Scan() {
 		line := scanner.Text()
 		entry := strings.Split(line, " ")
@@ -29,22 +29,18 @@ func Run9(scanner *bufio.Scanner) string {
 		}
 		distances[fmt.Sprintf("%s%s", entry[0], entry[2])] = distance
 		distances[fmt.Sprintf("%s%s", entry[2], entry[0])] = distance
-		locations[entry[0]] = true
-		locations[entry[2]] = true
+		locations.Add(entry[0])
+		locations.Add(entry[2])
 	}
 
 	currentMin := 10000000
 	currentMax := 0
-	var keys []string
-	for k := range locations {
-		keys = append(keys, k)
-	}
-	indices := tools.Range(len(keys))
+	indices := tools.Range(len(locations.Values))
 
 	for _, p := range tools.Permutations(indices) {
 		tdist := 0
 		for i := 0; i < len(indices)-1; i++ {
-			tdist += distances[fmt.Sprintf("%s%s", keys[p[i]], keys[p[i+1]])]
+			tdist += distances[fmt.Sprintf("%s%s", locations.Values[p[i]], locations.Values[p[i+1]])]
 		}
 		if tdist < currentMin {
 			currentMin = tdist

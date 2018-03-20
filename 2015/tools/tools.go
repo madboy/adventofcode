@@ -48,3 +48,22 @@ func Range(n int) []int {
 	}
 	return r
 }
+
+// Set is an unordered collection of unique int elements
+type Set struct {
+	Values []string
+	keys   map[string]bool
+}
+
+// NewSet returns an empty set
+func NewSet() Set {
+	return Set{keys: make(map[string]bool)}
+}
+
+// Add value to the set
+func (s *Set) Add(value string) {
+	if !s.keys[value] {
+		s.keys[value] = true
+		s.Values = append(s.Values, value)
+	}
+}
