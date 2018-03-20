@@ -24,15 +24,16 @@ func main() {
 	day := flag.String("day", "1", "Day of Advent")
 
 	var days = map[string]Solution{
-		"1": Solution{Function: days.Run1, Input: true},
-		"2": Solution{Function: days.Run2, Input: true},
-		"3": Solution{Function: days.Run3, Input: true},
-		"4": Solution{Function: days.Run4, Input: false},
-		"5": Solution{Function: days.Run5, Input: true},
-		"6": Solution{Function: days.Run6, Input: true},
-		"7": Solution{Function: days.Run7, Input: true},
-		"8": Solution{Function: days.Run8, Input: true},
-		"9": Solution{Function: days.Run9, Input: true},
+		"1":  Solution{Function: days.Run1, Input: true},
+		"2":  Solution{Function: days.Run2, Input: true},
+		"3":  Solution{Function: days.Run3, Input: true},
+		"4":  Solution{Function: days.Run4, Input: false},
+		"5":  Solution{Function: days.Run5, Input: true},
+		"6":  Solution{Function: days.Run6, Input: true},
+		"7":  Solution{Function: days.Run7, Input: true},
+		"8":  Solution{Function: days.Run8, Input: true},
+		"9":  Solution{Function: days.Run9, Input: true},
+		"10": Solution{Function: days.Run10, Input: false},
 	}
 
 	flag.Parse()
