@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import fileinput
 import json
 
 def count(numbers, ignore):
@@ -23,9 +24,8 @@ def bookkeeping(ignore):
     return total
 
 s = ""
-with open("../input/12", 'r') as f:
-    lines = f.readlines()
-    s = lines[0].strip()
+for line in fileinput.input():
+    s += line.strip()
 j = json.loads(s)
 
 print("first attempt:", bookkeeping(False))
