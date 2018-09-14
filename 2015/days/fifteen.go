@@ -13,32 +13,44 @@ func max(x, y int) int {
 }
 
 type ingredient struct {
-	spoons int
-	c      int
-	d      int
-	f      int
-	t      int
-	j      int
+	capacity   int
+	durability int
+	frosting   int
+	texture    int
+	calories   int
 }
 
-func (i ingredient) capacity() int {
-	return i.spoons * i.c
+type amounts struct {
+	a int
+	b int
+	c int
+	d int
 }
 
-func (i ingredient) durability() int {
-	return i.spoons * i.d
-}
-
-func (i ingredient) flavor() int {
-	return i.spoons * i.f
-}
-
-func (i ingredient) texture() int {
-	return i.spoons * i.t
-}
-
-func (i ingredient) calories() int {
-	return i.spoons * i.j
+// Generate ingredient amount whose sum is cap
+func ingredientAmounts(start, cap int) <-chan amounts {
+	ch := make(chan (amounts))
+	go func() {
+		for a := start; a < cap; a++ {
+			for b := start; b < cap; b++ {
+				if a+b > cap {
+					continue
+				}
+				for c := start; c < cap; c++ {
+					if a+b+c > cap {
+						continue
+					}
+					for d := start; d < cap; d++ {
+						if (a + b + c + d) == cap {
+							ch <- amounts{a, b, c, d}
+						}
+					}
+				}
+			}
+		}
+		close(ch)
+	}()
+	return ch
 }
 
 // Run15 will help us make the best cookies
@@ -50,39 +62,26 @@ func Run15(scanner *bufio.Scanner) string {
 
 	maxScore := 0
 	calorieScore := 0
-	sprinkles := ingredient{c: 5, d: -1, f: 0, t: 0, j: 5}
-	peanutButter := ingredient{c: -1, d: 3, f: 0, t: 0, j: 1}
-	frosting := ingredient{c: 0, d: -1, f: 4, t: 0, j: 6}
-	sugar := ingredient{c: -1, d: 0, f: 0, t: 2, j: 8}
+	sprinkles := ingredient{capacity: 5, durability: -1, frosting: 0, texture: 0, calories: 5}
+	peanutButter := ingredient{capacity: -1, durability: 3, frosting: 0, texture: 0, calories: 1}
+	frosting := ingredient{capacity: 0, durability: -1, frosting: 4, texture: 0, calories: 6}
+	sugar := ingredient{capacity: -1, durability: 0, frosting: 0, texture: 2, calories: 8}
 
-	for s := 1; s < 100; s++ {
-		sprinkles.spoons = s
-		for p := 1; p < 100; p++ {
-			peanutButter.spoons = p
-			for f := 1; f < 100; f++ {
-				frosting.spoons = f
-				for s := 1; s < 100; s++ {
-					sugar.spoons = s
-					if (sprinkles.spoons + peanutButter.spoons + frosting.spoons + sugar.spoons) == 100 {
-						score :=
-							max(0, sprinkles.capacity()+peanutButter.capacity()+frosting.capacity()+sugar.capacity()) *
-								max(0, sprinkles.durability()+peanutButter.durability()+frosting.durability()+sugar.durability()) *
-								max(0, sprinkles.flavor()+peanutButter.flavor()+frosting.flavor()+sugar.flavor()) *
-								max(0, sprinkles.texture()+peanutButter.texture()+frosting.texture()+sugar.texture())
+	for i := range ingredientAmounts(1, 100) {
+		score :=
+			max(0, sprinkles.capacity*i.a+peanutButter.capacity*i.b+frosting.capacity*i.c+sugar.capacity*i.d) *
+				max(0, sprinkles.durability*i.a+peanutButter.durability*i.b+frosting.durability*i.c+sugar.durability*i.d) *
+				max(0, sprinkles.frosting*i.a+peanutButter.frosting*i.b+frosting.frosting*i.c+sugar.frosting*i.d) *
+				max(0, sprinkles.texture*i.a+peanutButter.texture*i.b+frosting.texture*i.c+sugar.texture*i.d)
 
-						if score > maxScore {
-							maxScore = score
-						}
+		if score > maxScore {
+			maxScore = score
+		}
 
-						if (sprinkles.calories()+peanutButter.calories()+frosting.calories()+sugar.calories()) == 500 &&
-							score > calorieScore {
-							calorieScore = score
-						}
-					}
-
-				}
-			}
+		if (sprinkles.calories*i.a+peanutButter.calories*i.b+frosting.calories*i.c+sugar.calories*i.d) == 500 &&
+			score > calorieScore {
+			calorieScore = score
 		}
 	}
-	return fmt.Sprintf("%v, %d, %d", maxScore == 13882464, maxScore, calorieScore)
+	return fmt.Sprintf("%v, %d, %v, %d", maxScore == 13882464, maxScore, calorieScore == 11171160, calorieScore)
 }
