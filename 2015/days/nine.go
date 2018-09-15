@@ -35,7 +35,7 @@ func Run9(scanner *bufio.Scanner) string {
 
 	currentMin := 10000000
 	currentMax := 0
-	indices := tools.Range(len(locations.Values))
+	indices := tools.Range(0, len(locations.Values))
 
 	for _, p := range tools.Permutations(indices) {
 		tdist := 0

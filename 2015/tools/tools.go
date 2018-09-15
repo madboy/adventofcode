@@ -47,7 +47,7 @@ func Combinations(values []int, r int) [][]int {
 	if r > n {
 		return combinations
 	}
-	indices := Range(r)
+	indices := Range(0, r)
 
 	var combination []int
 	for _, i := range indices {
@@ -57,7 +57,7 @@ func Combinations(values []int, r int) [][]int {
 
 	for {
 		ii := math.MinInt32
-		for _, i := range Reversed(Range(r)) {
+		for _, i := range Reversed(Range(0, r)) {
 			if indices[i] != i+n-r {
 				ii = i
 				break
@@ -67,7 +67,7 @@ func Combinations(values []int, r int) [][]int {
 			return combinations
 		}
 		indices[ii]++
-		for _, j := range XRange(ii+1, r) {
+		for _, j := range Range(ii+1, r) {
 			indices[j] = indices[j-1] + 1
 		}
 		combinations = append(combinations, createCombination(indices, pool))
@@ -88,17 +88,8 @@ func swap(values []int, f, t int) {
 	values[f], values[t] = values[t], values[f]
 }
 
-// Range return a list of integers from 0 .. n-1
-func Range(n int) []int {
-	var r []int
-	for i := 0; i < n; i++ {
-		r = append(r, i)
-	}
-	return r
-}
-
-// XRange returns a list of integers from low .. high -1
-func XRange(low, high int) []int {
+// Range return a list of integers from low .. high-1
+func Range(low, high int) []int {
 	var r []int
 	for i := low; i < high; i++ {
 		r = append(r, i)

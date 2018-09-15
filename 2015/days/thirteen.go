@@ -54,7 +54,7 @@ func addMeToSeating(people tools.Set, keys map[string]int) (tools.Set, map[strin
 
 func getMaxHappiness(people tools.Set, seatingKeys map[string]int) string {
 	length := len(people.Values)
-	indexes := tools.Range(length)
+	indexes := tools.Range(0, length)
 	combinations := tools.Permutations(indexes)
 	max := 0
 	var finalSeating []int

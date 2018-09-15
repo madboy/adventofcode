@@ -10,7 +10,7 @@ import (
 // Run10 is having us looing-and-saying numbers
 func Run10(scanner *bufio.Scanner) string {
 	input := "1113122113"
-	for _ = range tools.Range(40) {
+	for _ = range tools.Range(0, 40) {
 		input = lookAndSay(input)
 	}
 	return fmt.Sprintf("Length of number is: %d", len(input))

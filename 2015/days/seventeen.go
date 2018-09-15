@@ -28,7 +28,7 @@ func Run17(scanner *bufio.Scanner) string {
 
 	var combinations [][]int
 
-	for i := range tools.Range(len(containers)) {
+	for i := range tools.Range(0, len(containers)) {
 		combos := tools.Combinations(containers, i)
 		for _, combination := range combos {
 			if sum(combination) == eggnog {
