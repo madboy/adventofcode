@@ -38,6 +38,7 @@ func Permutations(values []int) [][]int {
 }
 
 // Combinations retruns unique combinations of values of length r
+// Implementation from python itertools https://docs.python.org/3.6/library/itertools.html#itertools.combinations
 func Combinations(values []int, r int) [][]int {
 	var combinations [][]int
 	pool := make([]int, len(values))
