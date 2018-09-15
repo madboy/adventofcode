@@ -1,7 +1,9 @@
 package tools
 
-// Permutations return successive r length permutations of elements in values.
-// Using Heap's algorithm, https://en.wikipedia.org/wiki/Heap%27s_algorithm
+import "math"
+
+//Permutations return successive r length permutations of elements in values.
+//Using Heap's algorithm, https://en.wikipedia.org/wiki/Heap%27s_algorithm
 func Permutations(values []int) [][]int {
 	var c []int
 	var permutations [][]int
@@ -33,7 +35,52 @@ func Permutations(values []int) [][]int {
 		}
 	}
 	return permutations
+}
 
+// Combinations retruns unique combinations of values of length r
+func Combinations(values []int, r int) [][]int {
+	var combinations [][]int
+	pool := make([]int, len(values))
+	copy(pool, values)
+	n := len(pool)
+	if r > n {
+		return combinations
+	}
+	indices := Range(r)
+
+	var combination []int
+	for _, i := range indices {
+		combination = append(combination, pool[i])
+	}
+	combinations = append(combinations, combination)
+
+	for {
+		ii := math.MinInt32
+		for _, i := range Reversed(Range(r)) {
+			if indices[i] != i+n-r {
+				ii = i
+				break
+			}
+		}
+		if ii == math.MinInt32 {
+			return combinations
+		}
+		indices[ii]++
+		for _, j := range XRange(ii+1, r) {
+			indices[j] = indices[j-1] + 1
+		}
+		combinations = append(combinations, createCombination(indices, pool))
+
+	}
+	return combinations
+}
+
+func createCombination(indices, values []int) []int {
+	var combination []int
+	for _, i := range indices {
+		combination = append(combination, values[i])
+	}
+	return combination
 }
 
 func swap(values []int, f, t int) {
@@ -47,6 +94,24 @@ func Range(n int) []int {
 		r = append(r, i)
 	}
 	return r
+}
+
+// XRange returns a list of integers from low .. high -1
+func XRange(low, high int) []int {
+	var r []int
+	for i := low; i < high; i++ {
+		r = append(r, i)
+	}
+	return r
+}
+
+// Reversed returns a list of integers in reverse order
+func Reversed(values []int) []int {
+	var reversed []int
+	for i := len(values) - 1; i >= 0; i-- {
+		reversed = append(reversed, values[i])
+	}
+	return reversed
 }
 
 // Set is an unordered collection of unique int elements

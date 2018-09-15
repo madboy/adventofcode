@@ -6,6 +6,36 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
+func TestCombinations(t *testing.T) {
+	tests := []struct {
+		input    []int
+		r        int
+		expected [][]int
+	}{
+		{
+			input: []int{1, 3, 5},
+			r:     2,
+			expected: [][]int{
+				[]int{1, 3},
+				[]int{1, 5},
+				[]int{3, 5},
+			},
+		},
+	}
+
+	for _, test := range tests {
+		got := Combinations(test.input, test.r)
+		if len(got) != len(test.expected) || !allPresent(got, test.expected) {
+			t.Error(
+				"input", test.input,
+				"expected", test.expected,
+				"got", got,
+			)
+		}
+	}
+
+}
+
 func TestPermutations(t *testing.T) {
 	tests := []struct {
 		input    []int
@@ -62,7 +92,6 @@ func TestPermutations(t *testing.T) {
 				"got", got,
 			)
 		}
-
 	}
 }
 
