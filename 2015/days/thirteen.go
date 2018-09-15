@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/madboy/adventofcode/2015/tools"
+	"github.com/madboy/combinatoric"
 )
 
 func printSeating(finalSeating []int, names []string) {
@@ -55,7 +56,7 @@ func addMeToSeating(people tools.Set, keys map[string]int) (tools.Set, map[strin
 func getMaxHappiness(people tools.Set, seatingKeys map[string]int) string {
 	length := len(people.Values)
 	indexes := tools.Range(0, length)
-	combinations := tools.Permutations(indexes)
+	combinations := combinatoric.Permutations(indexes)
 	max := 0
 	var finalSeating []int
 	for _, c := range combinations {

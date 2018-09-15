@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/madboy/adventofcode/2015/tools"
+	"github.com/madboy/combinatoric"
 )
 
 type distance struct {
@@ -37,7 +38,7 @@ func Run9(scanner *bufio.Scanner) string {
 	currentMax := 0
 	indices := tools.Range(0, len(locations.Values))
 
-	for _, p := range tools.Permutations(indices) {
+	for _, p := range combinatoric.Permutations(indices) {
 		tdist := 0
 		for i := 0; i < len(indices)-1; i++ {
 			tdist += distances[fmt.Sprintf("%s%s", locations.Values[p[i]], locations.Values[p[i+1]])]
