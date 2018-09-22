@@ -3,14 +3,9 @@ package days
 import (
 	"bufio"
 	"fmt"
-)
 
-func max(x, y int) int {
-	if x > y {
-		return x
-	}
-	return y
-}
+	"github.com/madboy/adventofcode/2015/tools"
+)
 
 type ingredient struct {
 	capacity   int
@@ -69,10 +64,10 @@ func Run15(scanner *bufio.Scanner) string {
 
 	for i := range ingredientAmounts(1, 100) {
 		score :=
-			max(0, sprinkles.capacity*i.a+peanutButter.capacity*i.b+frosting.capacity*i.c+sugar.capacity*i.d) *
-				max(0, sprinkles.durability*i.a+peanutButter.durability*i.b+frosting.durability*i.c+sugar.durability*i.d) *
-				max(0, sprinkles.frosting*i.a+peanutButter.frosting*i.b+frosting.frosting*i.c+sugar.frosting*i.d) *
-				max(0, sprinkles.texture*i.a+peanutButter.texture*i.b+frosting.texture*i.c+sugar.texture*i.d)
+			tools.Max(0, sprinkles.capacity*i.a+peanutButter.capacity*i.b+frosting.capacity*i.c+sugar.capacity*i.d) *
+				tools.Max(0, sprinkles.durability*i.a+peanutButter.durability*i.b+frosting.durability*i.c+sugar.durability*i.d) *
+				tools.Max(0, sprinkles.frosting*i.a+peanutButter.frosting*i.b+frosting.frosting*i.c+sugar.frosting*i.d) *
+				tools.Max(0, sprinkles.texture*i.a+peanutButter.texture*i.b+frosting.texture*i.c+sugar.texture*i.d)
 
 		if score > maxScore {
 			maxScore = score
