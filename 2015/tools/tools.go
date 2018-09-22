@@ -36,6 +36,14 @@ func GetDivisors(n float64) []float64 {
 	return divisors
 }
 
+// Max of x and y
+func Max(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
+}
+
 // Set is an unordered collection of unique int elements
 type Set struct {
 	Values []string
