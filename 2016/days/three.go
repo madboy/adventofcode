@@ -1,10 +1,8 @@
-package main
+package days
 
 import (
 	"bufio"
 	"fmt"
-	"log"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -24,14 +22,8 @@ func readSides(lengths []string) [3]int {
 	return sides
 }
 
-func main() {
-	input, err := os.Open("input/3")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer input.Close()
-	scanner := bufio.NewScanner(input)
-
+// Run3 in which we are triangulating
+func Run3(scanner *bufio.Scanner) string {
 	rvalids := 0
 
 	var ct1 [3]int
@@ -54,7 +46,7 @@ func main() {
 			ct1[col], _ = strconv.Atoi(lengths[0])
 			ct2[col], _ = strconv.Atoi(lengths[1])
 			ct3[col], _ = strconv.Atoi(lengths[2])
-			fmt.Println(ct1)
+
 			if isTriangle(ct1) {
 				cvalids++
 			}
@@ -75,6 +67,7 @@ func main() {
 			col++
 		}
 	}
-	fmt.Printf("There's %d valid triangles listed if you read by rows\n", rvalids)
-	fmt.Printf("There's %d valid triangles listed if you read by columns\n", cvalids)
+	byRow := fmt.Sprintf("There's %d valid triangles listed if you read by rows", rvalids)
+	byCol := fmt.Sprintf("There's %d valid triangles listed if you read by columns", cvalids)
+	return fmt.Sprintf("%s\n%s", byRow, byCol)
 }
