@@ -1,13 +1,16 @@
-package main
+package days
 
 import (
+	"bufio"
 	"crypto/md5"
 	"fmt"
 	"strconv"
+	"strings"
 )
 
-func main() {
-	secret := "reyedfim"
+//Run5 in which we look for more codes
+func Run5(scanner *bufio.Scanner) string {
+	secret := "ojvtpuvg"
 	// secret := "abc"
 	count := 0
 	code := [8]string{"-", "-", "-", "-", "-", "-", "-", "-"}
@@ -31,5 +34,5 @@ func main() {
 			}
 		}
 	}
-	fmt.Printf("The code is: %s\n", code)
+	return fmt.Sprintf("The code is: %s", strings.Join(code[:], ""))
 }
