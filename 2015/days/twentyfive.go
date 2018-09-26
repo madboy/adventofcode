@@ -37,7 +37,7 @@ func Run25(scanner *bufio.Scanner) string {
 	row := 1
 	start := 20151125
 	curCode := start
-	for c := 0; c < targetV-1; c++ {
+	for c := 1; c < targetV; c++ {
 		if row == 1 {
 			// move down to next diagonal
 			row = column + 1
