@@ -1,10 +1,8 @@
-package main
+package days
 
 import (
 	"bufio"
 	"fmt"
-	"log"
-	"os"
 	"strconv"
 	"strings"
 )
@@ -67,14 +65,8 @@ func newCoord(instruction string, xwards bool) {
 	}
 }
 
-func main() {
-	input, err := os.Open("input/1")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer input.Close()
-
-	scanner := bufio.NewScanner(input)
+// Run1 will take us closer to the easter bunny HQ
+func Run1(scanner *bufio.Scanner) string {
 	facing = point{x: 0, y: 1}
 	coord = point{x: 0, y: 0}
 	twice = point{x: 0, y: 0}
@@ -90,6 +82,5 @@ func main() {
 			xwards = !xwards
 		}
 	}
-	fmt.Printf("If we walk like normal we have to walk %d blocks\n", abs(coord.x)+abs(coord.y))
-	fmt.Printf("If we read the back we have to walk %d blocks\n", abs(twice.x)+abs(twice.y))
+	return fmt.Sprintf("If we walk like normal we have to walk %d blocks\nIf we read the back we have to walk %d blocks", abs(coord.x)+abs(coord.y), abs(twice.x)+abs(twice.y))
 }
