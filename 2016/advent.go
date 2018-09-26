@@ -27,7 +27,7 @@ func main() {
 		"1": Solution{Function: days.Run1, Input: true},
 		"2": Solution{Function: days.Run2, Input: true},
 		"3": Solution{Function: days.Run3, Input: true},
-		// "4":  Solution{Function: days.Run4, Input: false},
+		"4": Solution{Function: days.Run4, Input: true},
 		// "5":  Solution{Function: days.Run5, Input: true},
 		// "6":  Solution{Function: days.Run6, Input: true},
 		// "7":  Solution{Function: days.Run7, Input: true},

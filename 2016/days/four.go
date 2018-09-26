@@ -1,10 +1,8 @@
-package main
+package days
 
 import (
 	"bufio"
 	"fmt"
-	"log"
-	"os"
 	"sort"
 	"strconv"
 	"strings"
@@ -94,17 +92,12 @@ func getCheckSum(letters []Letter) string {
 	return checkSum[:5]
 }
 
-func main() {
-	input, err := os.Open("input/4")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer input.Close()
+// Run4 in which we are looking for rooms
+func Run4(scanner *bufio.Scanner) string {
 	sum := 0
-	scanner := bufio.NewScanner(input)
+	poleRoom := 0
 	for scanner.Scan() {
 		line := scanner.Text()
-		// var letters = make(map[string]int)
 		letters := []Letter{}
 		pparts := strings.Split(line, "[") // checksum will need the ] removed
 		parts := strings.Split(pparts[0], "-")
@@ -122,8 +115,11 @@ func main() {
 			sum += n
 
 			rot := (n % 26)
-			fmt.Printf("Room name: %s, and sector id: %d\n", getRoomName(room, rot), n)
+			// fmt.Printf("Room name: %s, and sector id: %d\n", getRoomName(room, rot), n)
+			if strings.Contains(getRoomName(room, rot), "pole") {
+				poleRoom = n
+			}
 		}
 	}
-	fmt.Printf("The sum of the approved rooms is: %d\n", sum)
+	return fmt.Sprintf("The real rooms sector id sum is: %d\nThe North Pole objects are in: %d", sum, poleRoom)
 }
