@@ -1,10 +1,8 @@
-package main
+package days
 
 import (
 	"bufio"
 	"fmt"
-	"log"
-	"os"
 )
 
 type col struct {
@@ -18,16 +16,10 @@ func (co *col) Add(l string) {
 	co.c[l]++
 }
 
-func main() {
-	input, err := os.Open("input/6")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer input.Close()
-
+// Run6 in which we are reading Santas message
+func Run6(scanner *bufio.Scanner) string {
 	message := [8]*col{&col{}, &col{}, &col{}, &col{}, &col{}, &col{}, &col{}, &col{}}
 	ecVersion := ""
-	scanner := bufio.NewScanner(input)
 	for scanner.Scan() {
 		line := scanner.Text()
 		for i, c := range line {
@@ -45,5 +37,5 @@ func main() {
 		}
 		ecVersion += common
 	}
-	fmt.Println(ecVersion)
+	return fmt.Sprintf("%s", ecVersion)
 }
