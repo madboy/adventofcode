@@ -25,7 +25,7 @@ func main() {
 
 	var days = map[string]Solution{
 		"1": Solution{Function: days.Run1, Input: true},
-		// "2":  Solution{Function: days.Run2, Input: true},
+		"2": Solution{Function: days.Run2, Input: true},
 		// "3":  Solution{Function: days.Run3, Input: true},
 		// "4":  Solution{Function: days.Run4, Input: false},
 		// "5":  Solution{Function: days.Run5, Input: true},
