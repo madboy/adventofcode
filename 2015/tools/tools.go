@@ -20,6 +20,15 @@ func Sum(arr []float64) float64 {
 	return sum
 }
 
+// SumInt sums all elements in an int array
+func SumInt(arr []int) int {
+	sum := 0
+	for _, v := range arr {
+		sum += v
+	}
+	return sum
+}
+
 // GetDivisors calculates the diviors of a number
 func GetDivisors(n float64) []float64 {
 	var divisors []float64
