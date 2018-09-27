@@ -3,7 +3,7 @@ package days
 import (
 	"bufio"
 	"fmt"
-	"strings"
+	"regexp"
 )
 
 // Aunt contains what we know about auntie
@@ -49,20 +49,10 @@ func Run16(scanner *bufio.Scanner) string {
 
 	var aunts []Aunt
 
+	match := regexp.MustCompile(`Sue (\d+): (\w+): (\d+), (\w+): (\d+), (\w+): (\d+)`)
 	for _, a := range input {
-		parts := strings.Split(a, ",")
-		auntNumber := strings.Trim(strings.Split(parts[0], " ")[1], ":")
-		firstFact := strings.Split(parts[0], " ")[2:4]
-		firstCompound := strings.Trim(firstFact[0], ":")
-		firstCompoundAmount := firstFact[1]
-		tmp := Aunt{"name": auntNumber, firstCompound: firstCompoundAmount}
-		for _, fact := range parts[1:] {
-			f := strings.Trim(fact, " ")
-			entry := strings.Split(f, ":")
-			k := strings.Trim(entry[0], " ")
-			v := strings.Trim(entry[1], " ")
-			tmp[k] = v
-		}
+		m := match.FindStringSubmatch(a)
+		tmp := Aunt{"name": m[1], m[2]: m[3], m[4]: m[5], m[6]: m[7]}
 		aunts = append(aunts, tmp)
 	}
 

@@ -82,7 +82,7 @@ func Run19(scanner *bufio.Scanner) string {
 	var replacements []replacement
 	re := regexp.MustCompile(`(\w+) => (\w+)`)
 	for _, l := range input[:len(input)-2] {
-		matches := re.FindAllStringSubmatch(l, -1)[0]
+		matches := re.FindStringSubmatch(l)
 
 		replacements = append(replacements, replacement{m: matches[1], r: matches[2]})
 	}
